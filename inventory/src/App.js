@@ -1,34 +1,52 @@
 import './App.css';
 import SearchBar from "./SearchBar"
+import AddItem from "./AddItem"
 import {useState } from "react";
 
 function App() {
-    // {} is an empty Javascript object.  Therefore data is a Javascript object.
-    const [data, setData] = useState({});
+    // {} is an empty Javascript object.  Therefore 'filters' is a Javascript 
+    // object.
+    const [filters, setFilters] = useState({});
+    // data will store our inventory items, initially set to a javascript 
+    // object containing a key, 'items', whose value is an empty list.
+    const [data, setData] = useState( {items: []} );
 
-    // callback function will update the state in this component, and will
-    // be called by the child component that wants to update the state.
-    // searchParams is a Javascript object. Remember, data is also Javascript 
-    // object, initially set to an empty JS object.  Each time we update data, we
-    // will updating data to a new JS object.
-    const updateData = (searchParams) => {
-        setData(searchParams);
+    // This function's purpose is to be used as a callback function for the
+    // SearchBar component. Calling this function will update the state in 
+    // the App component (ie. its parent component).
+    // searchParams is a Javascript object. Remember, 'filters' is also a 
+    // Javascript object, initially set to an empty JS object.  Each time we 
+    // update 'filters', we will be updating 'filters' to a new JS object.
+    const updateFilters = (searchParams) => {
+        setFilters(searchParams);
+    }
+    
+    // This function is to be used as a callback function for the AddItem
+    // component.
+    const addItemToData = (item) => {
+      // Grab the items being stored in the data state variable (ie. the 
+      // items array).
+      let listOfItems = data["items"];
+      // Add the item-to-add to the items array.
+      listOfItems.push(item)
+      // Set the data state variable to a Javascript object containing the key
+      // 'items', with it's value being the up-to-date list of items.
+      setData( {items: listOfItems} );
+      console.log(data);
     }
 
 
   return (
     <div className="App">
-        {/** Take the function updateData and pass it as a callback function 
+        {/** Take the function updateFilters and pass it as a callback function 
          * to the SearchBar component, so that now inside of SearchBar we can
          * call that function from inside it.  That function will then update
-         * the data by calling setData, thereby changing the state of the parent
-         * component.
+         * the filters by calling setFilters, thereby changing the state of the 
+         * parent component.
         */}
-        <SearchBar callback={updateData} />
-        <p>Name: { "name" in data ? data["name"] : "No data to display" }</p>
-        <p>Max price: { "price" in data ? data["price"] : "No data to display" }</p>
-        <p>Type: { "type" in data ? data["type"] : "No data to display" }</p>
-        <p>Brand: { "brand" in data ? data["brand"] : "No data to display" }</p>
+        <SearchBar updateSearchParamsCallback={updateFilters} />
+        <AddItem addItemCallback={addItemToData} />
+
     </div>
   );
 }
