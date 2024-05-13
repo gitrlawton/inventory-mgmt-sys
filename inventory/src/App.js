@@ -1,6 +1,7 @@
 import './App.css';
-import SearchBar from "./SearchBar"
-import AddItem from "./AddItem"
+import SearchBar from "./SearchBar";
+import ItemsDisplay from "./ItemsDisplay";
+import AddItem from "./AddItem";
 import {useState } from "react";
 
 function App() {
@@ -27,6 +28,8 @@ function App() {
       // Grab the items being stored in the data state variable (ie. the 
       // items array).
       let listOfItems = data["items"];
+      // Assign an id for the item.
+      item.id = listOfItems.length;
       // Add the item-to-add to the items array.
       listOfItems.push(item)
       // Set the data state variable to a Javascript object containing the key
@@ -45,6 +48,7 @@ function App() {
          * parent component.
         */}
         <SearchBar updateSearchParamsCallback={updateFilters} />
+        <ItemsDisplay itemsProperty={ data["items"] } />
         <AddItem addItemCallback={addItemToData} />
 
     </div>
