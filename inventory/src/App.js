@@ -38,6 +38,44 @@ function App() {
       console.log(data);
     }
 
+    // Function that filters the items stored in data.  Used for the search 
+    // button's functionality.
+    const filterData = (data) => {
+      // Create an empty list that will hold the items that match the filter's
+      // criteria (ie. price is under $2 or type is drink.)
+      const filteredData = [];
+      
+      // This is an edge case to account for when the data list is empty.
+      if (!filters.name) {
+        return data;
+      }
+
+      // Loop through all of the items in data and check if they pass the 
+      // filter criteria.
+      for (const item of data) {
+        // Check if the filters are not the default value.
+        if (filters.name !== "" && item.name !== filters.name) {
+            continue;
+        }
+        if (filters.price !== 0 && item.price > filters.price) {
+          continue;
+        }
+        if (filters.type !== "" && item.type !== filters.type) {
+            continue;
+        }
+        if (filters.brand !== "" && item.brand !== filters.brand) {
+          continue;
+        }
+
+        // At this point, the item has passed all the filter criteria.  Add it
+        // to the list of filtered items.
+        filteredData.push(item);
+      }
+
+      // Return the list of filtered items.
+      return filteredData;
+    }
+
 
   return (
     <div className="App">
@@ -48,7 +86,9 @@ function App() {
          * parent component.
         */}
         <SearchBar updateSearchParamsCallback={updateFilters} />
-        <ItemsDisplay itemsProperty={ data["items"] } />
+        {/** Pass the list of items in data to filterData.
+         */}
+        <ItemsDisplay itemsProperty={ filterData(data["items"]) } />
         <AddItem addItemCallback={addItemToData} />
 
     </div>
