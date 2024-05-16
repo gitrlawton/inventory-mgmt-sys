@@ -22,11 +22,14 @@ function AddItem(props) {
         setBrand("");
     }
 
-
+    // Bootstrap classNames.  To use 'row' and 'column', they need to be inside
+    // an outer element with the className 'container'.
     return (
-        <div>
-            <h1>Add an Item</h1>
-            <form>
+        <div className="container">
+            <div className="row">
+                <h1>Add an Item</h1>
+            </div>
+            <div className="row">
                 <label htmlFor="name-field">Name:</label>
                 {/** Because we are using a value property, the input value will be endlessly 
                  * set and reset to that.  In order for the input box to take our new text as 
@@ -34,15 +37,17 @@ function AddItem(props) {
                  * the event (e) and calls the setName function, setting the name to the value
                  * being typed.
                  */}
-                <input id="name-field" type="text" value={name} onChange={ (e) => setName(e.target.value) }/>
+                <input id="name-field" className="form-control" type="text" value={name} onChange={ (e) => setName(e.target.value) }/>
                 <label htmlFor="price-field">Price:</label>
-                <input id="price-field" type="number" value={price} onChange={ (e) => setPrice(e.target.value) }/>
+                <input id="price-field" className="form-control" type="number" value={price} onChange={ (e) => setPrice(e.target.value) }/>
                 <label htmlFor="type-field">Type:</label>
-                <input id="type-field" type="text" value={type} onChange={ (e) => setType(e.target.value) }/>
+                <input id="type-field" className="form-control" type="text" value={type} onChange={ (e) => setType(e.target.value) }/>
                 <label htmlFor="brand-field">Brand:</label>
-                <input id="brand-field" type="text" value={brand} onChange={ (e) => setBrand(e.target.value) }/>
-                <button type="button" onClick={addItemButtonPressed}>Add Item</button>
-            </form>
+                <input id="brand-field" className="form-control" type="text" value={brand} onChange={ (e) => setBrand(e.target.value) }/>
+            </div>
+            <div className="row mt-3">    
+                <button type="button" className="btn btn-primary" onClick={addItemButtonPressed}>Add Item</button>
+            </div>
         </div>
     )
 }

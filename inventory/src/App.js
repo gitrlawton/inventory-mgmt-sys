@@ -76,9 +76,15 @@ function App() {
       return filteredData;
     }
 
-
+  // Bootstrap classNames.  To use 'row' and 'column', they need to be inside
+  // an outer element with the className 'container'.
   return (
-    <div className="App">
+    <div className="container">
+      <div className="row mt-3">
+        {/** Pass the list of items in data to filterData.*/}
+        <ItemsDisplay itemsProperty={ filterData(data["items"]) } />
+      </div>
+      <div className="row mt-3">
         {/** Take the function updateFilters and pass it as a callback function 
          * to the SearchBar component, so that now inside of SearchBar we can
          * call that function from inside it.  That function will then update
@@ -86,11 +92,10 @@ function App() {
          * parent component.
         */}
         <SearchBar updateSearchParamsCallback={updateFilters} />
-        {/** Pass the list of items in data to filterData.
-         */}
-        <ItemsDisplay itemsProperty={ filterData(data["items"]) } />
+      </div>
+      <div className="row mt-3">
         <AddItem addItemCallback={addItemToData} />
-
+      </div>
     </div>
   );
 }

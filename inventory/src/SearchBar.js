@@ -16,27 +16,44 @@ function SearchBar(props) {
         props.updateSearchParamsCallback({ name: name, price: price, type: type, brand: brand });
     }
 
-
+    // Bootstrap classNames.  To use 'row' and 'column', they need to be inside
+    // an outer element with the className 'container'.
     return (
-        <div>
-            <h1>Search for an Item</h1>
-            <form>
-                <label htmlFor="name-field">Name:</label>
-                {/** Because we are using a value property, the input value will be endlessly 
-                 * set and reset to that.  In order for the input box to take our new text as 
-                 * we type it, we need to assign an onChange property.  This property takes
-                 * the event (e) and calls the setName function, setting the name to the value
-                 * being typed.
-                 */}
-                <input id="name-field" type="text" value={name} onChange={ (e) => setName(e.target.value) }/>
-                <label htmlFor="price-field">Max Price:</label>
-                <input id="price-field" type="number" value={price} onChange={ (e) => setPrice(e.target.value) }/>
-                <label htmlFor="type-field">Type:</label>
-                <input id="type-field" type="text" value={type} onChange={ (e) => setType(e.target.value) }/>
-                <label htmlFor="brand-field">Brand:</label>
-                <input id="brand-field" type="text" value={brand} onChange={ (e) => setBrand(e.target.value) }/>
-                <button type="button" onClick={searchButtonPressed}>Search</button>
-            </form>
+        <div className="container">
+            <div className="row">
+                <h1>Search for an Item</h1>
+            </div>
+            {/** Put all the input elements into one row. Then, put each one in
+             * its own separate column. */}
+            <div className="row">
+                <div className="col">
+                    <label htmlFor="name-field">Name:</label>
+                    {/** Because we are using a value property, the input value will be endlessly 
+                     * set and reset to that.  In order for the input box to take our new text as 
+                     * we type it, we need to assign an onChange property.  This property takes
+                     * the event (e) and calls the setName function, setting the name to the value
+                     * being typed.
+                     */}
+                    <input id="name-field" className="form-control" type="text" value={name} onChange={ (e) => setName(e.target.value) }/>
+                </div>
+                <div className="col">
+                    <label htmlFor="price-field">Max Price:</label>
+                    <input id="price-field" className="form-control" type="number" value={price} onChange={ (e) => setPrice(e.target.value) }/>
+                </div>
+                <div className="col">
+                    <label htmlFor="type-field">Type:</label>
+                    <input id="type-field" className="form-control" type="text" value={type} onChange={ (e) => setType(e.target.value) }/>
+                </div>
+                <div className="col">
+                    <label htmlFor="brand-field">Brand:</label>
+                    <input id="brand-field" className="form-control" type="text" value={brand} onChange={ (e) => setBrand(e.target.value) }/>
+                </div>
+            </div>
+            {/** Button is in it's own row, taking up the four middle columns. */}    
+            <div className="row mt-3">
+                <div className="col-4" />
+                <button type="button" className="col-4 btn btn-primary" onClick={searchButtonPressed}>Search</button>
+            </div>
         </div>
     )
 }
