@@ -2,7 +2,8 @@ import './App.css';
 import SearchBar from "./SearchBar";
 import ItemsDisplay from "./ItemsDisplay";
 import AddItem from "./AddItem";
-import {useState } from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 
 function App() {
     // {} is an empty Javascript object.  Therefore 'filters' is a Javascript 
@@ -11,6 +12,28 @@ function App() {
     // data will store our inventory items, initially set to a javascript 
     // object containing a key, 'items', whose value is an empty list.
     const [data, setData] = useState( {items: []} );
+
+    useEffect( () => {
+      // Send GET request to json server to give me all the items.
+      // Then update the data with those items.
+      fetch("http://localhost:3001/items")
+      // Fetch returns a response.  Take it and parse it from json to JS.
+      .then( (response) => response.json() )
+      // Take that parsed response (call it data now) and set data's state
+      // to the data in the form a JavaScript object (keeping consistent with
+      // its original, default state.)
+      .then( (data) => setData({ items: data }) )
+
+      // Cleanup operation when the effect is run another time would look
+      // like this:
+      // return () => { }
+    }, []); 
+    // [] is a dependency array.  It is either empty, meaning it only runs once
+    // (at the beginning of the component's lifecycle), or it lists the state 
+    // variables you want to listen to for changes in them (ie. data or filters).
+    // When a change in their value (state) is detected, useEffect will execute
+    // the code written inside it.
+
 
     // This function's purpose is to be used as a callback function for the
     // SearchBar component. Calling this function will update the state in 
@@ -29,7 +52,8 @@ function App() {
       // items array).
       let listOfItems = data["items"];
 
-      // Write our request.
+      // Write our POST request.  This is not needed for a GET request, only
+      // for POST or when we send data.  For GET, we can just fetch.
       const requestOptions = {
         method: "POST",
         headers: {  // Headers define the format of our data.
@@ -39,8 +63,8 @@ function App() {
       }
       // Send the request to the server's url and tell it to store the 
       // item in the db.
-      fetch("http://localhost:3000/items", requestOptions)
-      // Fetch returns a response.  That response and parse it from json to JS.
+      fetch("http://localhost:3001/items", requestOptions)
+      // Fetch returns a response.  Take it and parse it from json to JS.
       .then( (response) => response.json() )
       // Take that parsed response (call it data now) and...
       .then( (data) => {
