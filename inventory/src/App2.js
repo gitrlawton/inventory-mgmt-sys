@@ -1,4 +1,4 @@
-
+// File is not used.  This is just for explanation of concepts.
 
 import './App.css';
 import { PropTypes } from "prop-types";

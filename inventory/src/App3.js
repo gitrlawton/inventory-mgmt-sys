@@ -1,4 +1,5 @@
 /** This file is just for showing examples of state. */
+// File is not used.  This is just for explanation of concepts.
 
 import './App.css';
 import { PropTypes } from "prop-types";

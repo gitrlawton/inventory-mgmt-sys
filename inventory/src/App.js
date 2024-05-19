@@ -44,16 +44,51 @@ function App() {
     const updateFilters = (searchParams) => {
         setFilters(searchParams);
     }
+
+    // Function to delete an item which we can pass as a prop to ItemsDisplay
+    // component so that it can call it to delete an item when we click the
+    // Delete button.  This function takes in an item.
+    const deleteItem = (item) => {
+      // Extract the items array from the data dictionary (JS object) and
+      // save it as the variable 'listOfItems'.
+      const listOfItems = data["items"];
+      // Write our DELETE request.  This is not needed for a GET request, 
+      // only for these other methods.  For GET, we can just fetch.
+      // Since we are not passing data, we don't need headers like with POST.
+      const requestOptions = {
+        method: "DELETE"
+      }
+      fetch(`http://localhost:3001/items/${item.id}`, requestOptions )
+      .then( (response) => {
+        // Check if the request was successfully sent.
+        if (response.ok) {
+          /** Item is not deleted from the backend, so now, delete the item 
+           * from the front-end.  */
+
+          // Grab the index of the item to delete.
+          const idx = listOfItems.indexOf(item);
+          // Delete one item, at index 'idx'.
+          listOfItems.splice(idx, 1);
+          /** Update the data by setting it to the current list of items. */
+          // Set the data state variable to a Javascript object containing the key
+          // 'items', with it's value being the up-to-date list of items.
+          // Keep in mind 'data' is always going to be a JS object containing
+          // a list of items, assigned to the key 'items'.
+          setData( {items: listOfItems });
+        }
+      })
+    }
     
     // This function is to be used as a callback function for the AddItem
-    // component.
+    // component.  This function takes in an item.
     const addItemToData = (item) => {
-      // Grab the items being stored in the data state variable (ie. the 
-      // items array).
+      // Extract the items being stored in the data state variable (a JS 
+      // object, similar to a dictionary) and save it as the variable 'items'.
       let listOfItems = data["items"];
 
-      // Write our POST request.  This is not needed for a GET request, only
-      // for POST or when we send data.  For GET, we can just fetch.
+      // Write our POST request.  This is not needed for a GET request, 
+      // only for these other methods.  For GET, we can just fetch.
+      // POST request requires us to define the format of our data in a header.
       const requestOptions = {
         method: "POST",
         headers: {  // Headers define the format of our data.
@@ -72,6 +107,8 @@ function App() {
         listOfItems.push(data);
         // Set the data state variable to a Javascript object containing the key
         // 'items', with it's value being the up-to-date list of items.
+        // Keep in mind 'data' is always going to be a JS object containing
+        // a list of items, assigned to the key 'items'.
         setData( {items: listOfItems} );
       })
     }
@@ -119,8 +156,8 @@ function App() {
   return (
     <div className="container">
       <div className="row mt-3">
-        {/** Pass the list of items in data to filterData.*/}
-        <ItemsDisplay itemsProperty={ filterData(data["items"]) } />
+        {/** Pass the function to delete an item.  Also pass the list of items in data to filterData.*/}
+        <ItemsDisplay deleteItemFunction={deleteItem} itemsProperty={ filterData(data["items"]) } />
       </div>
       <div className="row mt-3">
         {/** Take the function updateFilters and pass it as a callback function 
